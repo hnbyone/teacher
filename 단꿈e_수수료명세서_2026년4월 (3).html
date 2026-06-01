@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>단꿈e 수수료 지급 명세서 — 2026년4월</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR',sans-serif;background:#f0f0f0;
+  display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
+#lockScreen{background:white;border-radius:16px;padding:48px 40px;text-align:center;
+  box-shadow:0 4px 24px rgba(0,0,0,.1);width:100%;max-width:420px;}
+.lock-logo{font-size:12px;font-weight:700;color:#b8860b;letter-spacing:2px;margin-bottom:8px;}
+.lock-month{display:inline-block;background:#f5f0e0;color:#b8860b;font-size:12px;
+  font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:16px;}
+.lock-title{font-size:22px;font-weight:700;color:#1a1a1a;margin-bottom:8px;}
+.lock-sub{font-size:13px;color:#888;margin-bottom:28px;line-height:1.7;}
+.field-wrap{margin-bottom:10px;}
+.field-label{font-size:11px;color:#999;text-align:left;margin-bottom:4px;padding-left:2px;}
+.field-input{width:100%;padding:12px 16px;border:2px solid #e8e8e8;border-radius:10px;
+  font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s;}
+.field-input:focus{border-color:#c8a035;}
+#unlockBtn{width:100%;padding:14px;margin-top:6px;
+  background:linear-gradient(135deg,#c8a035,#e8c060);color:white;border:none;
+  border-radius:10px;font-size:15px;font-weight:600;
+  font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:opacity .2s;}
+#unlockBtn:hover{opacity:.88;}
+#errMsg{color:#e05050;font-size:13px;margin-top:10px;min-height:18px;}
+#statement{display:none;width:100%;max-width:700px;}
+.action-bar{display:flex;gap:10px;margin-bottom:14px;justify-content:flex-end;}
+.btn-print{padding:9px 20px;background:linear-gradient(135deg,#c8a035,#e8c060);
+  color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;
+  font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
+.btn-back{padding:9px 20px;background:white;color:#666;border:1px solid #ddd;
+  border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
+.stmt-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.12);}
+.stmt-header{background:linear-gradient(135deg,#1a1a2e,#2d2d44);
+  padding:24px 32px;display:flex;align-items:center;justify-content:space-between;}
+.stmt-brand{color:#c8a035;font-size:16px;font-weight:700;letter-spacing:1px;}
+.stmt-title{color:white;font-size:20px;font-weight:700;text-align:center;flex:1;}
+.stmt-date{background:rgba(200,160,53,.2);border:1px solid #c8a035;
+  color:#e8c060;font-size:11px;padding:5px 12px;border-radius:20px;white-space:nowrap;}
+.stmt-body{padding:24px 32px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #e0e0e0;
+  border-radius:10px;overflow:hidden;margin-bottom:24px;}
+.ic{padding:9px 14px;font-size:13px;border-bottom:1px solid #f0f0f0;}
+.ic.lbl{background:#fafafa;color:#666;font-weight:500;border-right:1px solid #e0e0e0;}
+.ic.val{color:#1a1a1a;}
+.ic.nb{border-bottom:none;}
+.sec{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:10px;
+  padding-left:10px;border-left:3px solid #c8a035;}
+.det-box{border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:22px;}
+.det-row{display:flex;justify-content:space-between;align-items:center;
+  padding:11px 18px;border-bottom:1px solid #f5f5f5;font-size:13px;}
+.det-row:last-child{border-bottom:none;}
+.det-row.sub{background:#fafafa;}
+.det-row.sub .dl{color:#888;padding-left:10px;}
+.det-row.sub .dv{color:#555;}
+.det-row.tot{background:#f5f3ec;border-top:2px solid #c8a035;}
+.det-row.tot .dl{font-weight:700;color:#1a1a1a;}
+.det-row.tot .dv{font-weight:700;color:#1a1a1a;font-size:15px;}
+.ded-box{border:1px solid #fde;border-radius:10px;overflow:hidden;margin-bottom:22px;background:#fff9f9;}
+.ded-hd{padding:9px 18px;background:#fdecea;font-size:13px;font-weight:700;color:#8b2020;}
+.ded-row{display:flex;justify-content:space-between;padding:9px 18px;
+  font-size:13px;border-bottom:1px solid #fdf0f0;}
+.ded-row:last-child{border-bottom:none;}
+.ded-row .dl{color:#666;}
+.ded-row .dv{color:#c0392b;font-weight:500;}
+.ded-tot{display:flex;justify-content:space-between;padding:10px 18px;
+  background:#fdecea;font-size:13px;font-weight:700;color:#8b2020;}
+.net{background:linear-gradient(135deg,#c8a035,#e8c060);border-radius:12px;
+  padding:18px 24px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.net-lbl{color:white;font-size:14px;font-weight:600;}
+.net-val{color:white;font-size:26px;font-weight:700;}
+.stmt-ft{border-top:1px solid #f0f0f0;padding:18px 32px;
+  display:flex;justify-content:space-between;background:#fafafa;font-size:12px;color:#888;}
+.stmt-ft .co{font-weight:600;color:#444;}
+@media print{
+  body{background:white;padding:0;}
+  .action-bar{display:none !important;}
+  #statement{max-width:100%;}
+  .stmt-card{box-shadow:none;border-radius:0;}
+}
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-logo">DANKKUM AI</div>
+  <div class="lock-month">📅 2026년4월 수수료 명세서</div>
+  <div class="lock-title">수수료 지급 명세서</div>
+  <div class="lock-sub">본인의 이름과 비밀번호를 입력하면<br>해당 월 명세서를 확인할 수 있습니다.</div>
+  <div class="field-wrap">
+    <div class="field-label">교사 성명</div>
+    <input class="field-input" id="nameInput" type="text" placeholder="이름 입력"
+      onkeydown="if(event.key==='Enter') document.getElementById('pwInput').focus()" />
+  </div>
+  <div class="field-wrap">
+    <div class="field-label">비밀번호</div>
+    <input class="field-input" id="pwInput" type="password" placeholder="비밀번호 입력"
+      onkeydown="if(event.key==='Enter') unlock()" />
+  </div>
+  <button id="unlockBtn" onclick="unlock()">명세서 열람하기</button>
+  <div id="errMsg"></div>
+</div>
+
+<div id="statement">
+  <div class="action-bar">
+    <button class="btn-back" onclick="goBack()">← 돌아가기</button>
+    <button class="btn-print" onclick="window.print()">🖨️ PDF 인쇄</button>
+  </div>
+  <div class="stmt-card" id="stmtCard"></div>
+</div>
+
+<script>
+const ENCRYPTED_DATA = [{"nameHash":"1169899361","data":"ShBdVVxXEQ4T3quQ3bS/2am2ERgTUFJaWnxSWVQQCRZ6cNmBnNmciN2vs9mnuxEYE1NQV15HXUB/R14WCxALBQcfAQUcAgsDBx8LBwYQHxZCV0dAXVd+W19GWxYLEGRRVRJyREMSAwURAAMGBxIDBAsCAw4BAhNzfGYYBAgCAxQZ36ao24eeFNyjr9iVst+/rRsRGBNCUk18XV1AWRAJFndAWhR8U0oUAQMTBgEABRQBAgkEAQgDBBF1fmAaAgoEARIb2aSu2YGcEt6lrd6XtN25rx0THhFdQkFGUXVTR1ETCBFyQ1sTeVBLEwYIEgEEAwQTBAEIAwQLAgMUdn9nHwELAwQRGt6hrdiGmRHfoqjdlrPYuq4aFh0QR1tFU195VF9RUUNBEQ4ABAYYE0ddXUViQV1SVxEOAAEDBAEeEVlQXFJTVHRWURMIAQUFBwMEAR4RXV9RXFlUZlJMEwgFAAIHAxgTXlxXUF5nVUkQCQIFAQYYE0ZcQFBed1FVR1BAEwgEBAYKBhgTXFZAYVNKFgsAAwMFAAIBTA=="}];
+
+// ── UTF-8 문자열 → 바이트 배열 ───────────────────────────────
+function strToBytes(str) {
+  return Array.from(new TextEncoder().encode(str));
+}
+
+// ── 바이트 배열 → UTF-8 문자열 ──────────────────────────────
+function bytesToStr(bytes) {
+  return new TextDecoder('utf-8').decode(new Uint8Array(bytes));
+}
+
+// ── Base64 → 바이트 배열 ─────────────────────────────────────
+function base64ToBytes(b64) {
+  const bin = atob(b64);
+  return Array.from({length: bin.length}, (_, i) => bin.charCodeAt(i));
+}
+
+// ── XOR 복호화 ───────────────────────────────────────────────
+function xorDecrypt(encB64, password) {
+  try {
+    const encBytes = base64ToBytes(encB64);
+    const keyBytes = strToBytes(password);
+    const decBytes = encBytes.map((b, i) => b ^ keyBytes[i % keyBytes.length]);
+    return bytesToStr(decBytes);
+  } catch(e) { return null; }
+}
+
+// ── 해시 (Apps Script와 동일한 로직) ────────────────────────
+function simpleHash(name, password) {
+  const bytes = strToBytes(name + password);
+  let hash = 0;
+  bytes.forEach(b => { hash = ((hash << 5) - hash) + b; hash |= 0; });
+  return String(Math.abs(hash));
+}
+
+function comma(n) { return Number(n).toLocaleString('ko-KR'); }
+
+// ── 잠금 해제 ────────────────────────────────────────────────
+function unlock() {
+  const name = document.getElementById('nameInput').value.trim();
+  const pw   = document.getElementById('pwInput').value.trim();
+  const err  = document.getElementById('errMsg');
+
+  if (!name || !pw) {
+    err.textContent = '이름과 비밀번호를 모두 입력해 주세요.';
+    setTimeout(() => err.textContent = '', 3000);
+    return;
+  }
+
+  const targetHash = simpleHash(name, pw);
+  const matched    = ENCRYPTED_DATA.find(e => e.nameHash === targetHash);
+
+  if (!matched) {
+    err.textContent = '이름 또는 비밀번호가 올바르지 않습니다.';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+    setTimeout(() => err.textContent = '', 3000);
+    return;
+  }
+
+  const decrypted = xorDecrypt(matched.data, pw);
+  if (!decrypted) {
+    err.textContent = '복호화 중 오류가 발생했습니다.';
+    return;
+  }
+
+  renderStatement(JSON.parse(decrypted));
+  document.getElementById('lockScreen').style.display = 'none';
+  document.getElementById('statement').style.display  = 'block';
+}
+
+// ── 명세서 렌더링 ─────────────────────────────────────────────
+function renderStatement(t) {
+  document.getElementById('stmtCard').innerHTML = `
+  <div class="stmt-header">
+    <div class="stmt-brand">Dankkum<span style="font-size:10px">i</span></div>
+    <div class="stmt-title">단꿈e 수수료 지급 명세서</div>
+    <div class="stmt-date">${t.issueDate}</div>
+  </div>
+  <div class="stmt-body">
+    <div class="info-grid">
+      <div class="ic lbl">회사명</div>       <div class="ic val">㈜단꿈아이</div>
+      <div class="ic lbl">교사 성명</div>    <div class="ic val">${t.name}</div>
+      <div class="ic lbl">사업자등록번호</div><div class="ic val">127-88-01812</div>
+      <div class="ic lbl">정산 연월</div>    <div class="ic val">${t.settleMonth}</div>
+      <div class="ic lbl">대표이사</div>     <div class="ic val">설민석, 장군</div>
+      <div class="ic lbl">지급 연월</div>    <div class="ic val">${t.payMonth}</div>
+      <div class="ic lbl">주소</div>
+      <div class="ic val">경기도 성남시 분당구 판교로 242<br>판교 디지털센터 C동 701-2호</div>
+      <div class="ic lbl">은행명</div>       <div class="ic val">${t.bankName}</div>
+      <div class="ic lbl nb"></div>           <div class="ic val nb"></div>
+      <div class="ic lbl nb">계좌번호</div>  <div class="ic val nb">${t.accountNum}</div>
+    </div>
+
+    <div class="sec">지급 내역 상세</div>
+    <div class="det-box">
+      <div class="det-row sub">
+        <span class="dl">관리 회원 수</span>
+        <span class="dv">${comma(t.totalMembers)} 명</span>
+      </div>
+      <div class="det-row sub">
+        <span class="dl">단가</span>
+        <span class="dv">${comma(t.unitPrice)} 원 / 명</span>
+      </div>
+      <div class="det-row tot">
+        <span class="dl">관리 수수료
+          <span style="font-size:11px;font-weight:400;color:#888;display:block;margin-top:2px">
+            ${comma(t.totalMembers)}명 × ${comma(t.unitPrice)}원
+          </span>
+        </span>
+        <span class="dv">${comma(t.manageFee)} 원</span>
+      </div>
+    </div>
+
+    <div class="sec">공제 내역</div>
+    <div class="ded-box">
+      <div class="ded-hd">📤 공제 내역</div>
+      <div class="ded-row">
+        <span class="dl">사업소득세 (3%)</span>
+        <span class="dv">- ${comma(t.incomeTax)} 원</span>
+      </div>
+      <div class="ded-row">
+        <span class="dl">주민세 (0.3%)</span>
+        <span class="dv">- ${comma(t.localTax)} 원</span>
+      </div>
+      <div class="ded-tot">
+        <span>공제 합계</span>
+        <span>- ${comma(t.totalDeduct)} 원</span>
+      </div>
+    </div>
+
+    <div class="net">
+      <div class="net-lbl">🏦 실지급액</div>
+      <div class="net-val">${comma(t.netPay)} 원</div>
+    </div>
+  </div>
+  <div class="stmt-ft">
+    <div><div class="co">㈜ 단꿈아이</div><div style="margin-top:2px">대표이사 : 설민석, 장군 (인)</div></div>
+    <div style="text-align:right">${t.issueDate}<br>
+      <span style="color:#c8a035;font-weight:600">㈜ 단꿈아이</span></div>
+  </div>`;
+}
+
+// ── 돌아가기 ─────────────────────────────────────────────────
+function goBack() {
+  document.getElementById('statement').style.display  = 'none';
+  document.getElementById('lockScreen').style.display = 'block';
+  document.getElementById('nameInput').value = '';
+  document.getElementById('pwInput').value   = '';
+}
+</script>
+</body>
+</html>
